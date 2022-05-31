@@ -173,7 +173,8 @@ const MusicVisualizer: React.FC<Props> = ({
         dataArray.length - 1
       );
 
-      console.log(asciichart.plot(dataArray, { height: 10 }))
+      // LOGGING AUDIO FREQ IN CONSOLE, for debugging
+      // console.log(asciichart.plot(dataArray, { height: 10 }))
 
       let overallAvg = avg(dataArray);
       let overallMax = max(dataArray);
