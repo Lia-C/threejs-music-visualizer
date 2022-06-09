@@ -59,7 +59,6 @@ const MusicVisualizer: React.FC<Props> = ({
     let group = new THREE.Group();
     let camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 
-    //// SET CAMERA ZOOM according to music
     camera.position.set(0, 0, 400); 
     camera.lookAt(scene.position);
     scene.add(camera);
@@ -87,10 +86,6 @@ const MusicVisualizer: React.FC<Props> = ({
       flatShading: true,
     });
 
-    // background ball
-    // let bgBall = new THREE.Mesh(icosahedronGeometryOuter, lambertMaterialOuter);
-    // bgBall.position.set(0, 0, 0);
-
     // outer mesh ball
     let outerBall = new THREE.Mesh(icosahedronGeometry, lambertMaterial);
     outerBall.position.set(0, 0, 0);
@@ -109,19 +104,19 @@ const MusicVisualizer: React.FC<Props> = ({
     ambientLight.intensity = 0.5;
     scene.add(ambientLight);
 
-    let spotLight = new THREE.SpotLight(0x6363ff); // purple-blue
+    let spotLight = new THREE.SpotLight(0x6363ff); 
     spotLight.intensity = 1;
     spotLight.position.set(-100, 400, 400);
     spotLight.castShadow = false;
     scene.add(spotLight);
 
-    let spotLight2 = new THREE.SpotLight(0x7de8ff); //light cyan //0xFF00FF);
+    let spotLight2 = new THREE.SpotLight(0x7de8ff); 
     spotLight2.intensity = 1;
     spotLight2.position.set(-100, -400, -200);
     spotLight2.castShadow = false;
     scene.add(spotLight2);
 
-    let spotLight3 = new THREE.SpotLight(0x46c7a5); //seafoam
+    let spotLight3 = new THREE.SpotLight(0x46c7a5); 
     spotLight3.intensity = 1;
     spotLight3.position.set(200, 0, 0);
     spotLight3.castShadow = false;
@@ -133,11 +128,9 @@ const MusicVisualizer: React.FC<Props> = ({
     orbitControls.enableZoom = userZoomControls;
 
     scene.add(group);
-    // scene.add(bgBall);
     let hueInc = 20;
     let i = 0;
     let isHueIncrementing = true;
-    // let isCamZoomingIn = true;
     const render = () => {
       i++;
       if (i === 4) {
@@ -154,7 +147,7 @@ const MusicVisualizer: React.FC<Props> = ({
       ambientLight.intensity = 0.6;
 
       analyser.getByteFrequencyData(dataArray);
-      // add thirds:
+      
       let oneThirdI = dataArray.length / 3 - 1;
       let twoThirdsI = 2 * (dataArray.length / 3) - 1;
 
@@ -163,10 +156,11 @@ const MusicVisualizer: React.FC<Props> = ({
       let midThirdArray = dataArray.slice(oneThirdI, twoThirdsI);
       let hiThirdArray = dataArray.slice(twoThirdsI, dataArray.length - 1);
 
+      // highest two fifths: 4/5 and 5/5
       let fourFifthsI = 4 * (dataArray.length / 5) - 1;
       let hiFifthArray = dataArray.slice(fourFifthsI, dataArray.length - 1);
 
-      //orig: 2 halves
+      // 2 halves
       let lowerHalfArray = dataArray.slice(0, dataArray.length / 2 - 1);
       let upperHalfArray = dataArray.slice(
         dataArray.length / 2 - 1,
@@ -220,7 +214,6 @@ const MusicVisualizer: React.FC<Props> = ({
       let time = window.performance.now();
       let rf = 0.00001;
 
-      // OPTIONS: edit saturation 0.1 to 0.7
       innerBall.material.color.setHSL(0.51, 0.1, 0.5 + upperHalfMaxFr/2);
 
       const innerBallOffset = () => {
@@ -303,28 +296,6 @@ const MusicVisualizer: React.FC<Props> = ({
       group.rotation.y += 0.003;
       outerBall.rotation.y -= 0.0015;
       outerBall.rotation.x += 0.0015;
-
-      const MAX_ZOOM_IN_DIST = 50;
-      const MAX_ZOOM_OUT_DIST = 1000;
-      const CAM_ZOOM_SPEED = 1;
-      
-      
-      // if (isCamZoomingIn){
-      //   camera.position.z -= CAM_ZOOM_SPEED
-      // } else{
-      //   camera.position.z += CAM_ZOOM_SPEED
-      // }
-
-      // // update isCamZoomingIn if needed
-      // if (camera.position.z >= MAX_ZOOM_OUT_DIST){
-      //   isCamZoomingIn = true;
-      // } 
-
-      // if (camera.position.z <= MAX_ZOOM_IN_DIST){
-      //   isCamZoomingIn = false;
-      // }
-
-      // console.log(isCamZoomingIn);
 
       orbitControls.update();
     
